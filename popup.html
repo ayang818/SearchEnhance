@@ -1,6 +1,7 @@
 <!-- 这个就很好理解了，首先你看到的点击 Icon 弹出的弹框实际上就是 popup.html。而嵌入在其中的 popup.js 实际上只是服务于 popup.html。因此，类似 popup.html 里面的 button 点击监听事件等，就可以放到 popup.js -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,18 +10,31 @@
     <link rel="stylesheet" href="content.css">
     <title>Welcome to search enhance</title>
 </head>
+
 <body>
     <b>SearchEnhance(搜索增强)</b>
     <p>让你可以更方便地使用你的搜索引擎</p>
     <hr>
     <div class="wrapper">
-        <div class="flexd w200">
-            <div class="title">关键词过滤</div> 
-            <div class="btn">+</div>
-        </div>
+        <!-- part of text filter -->
         <div>
-            <input type="checkbox"><input type="text">
+            <div class="flexd w200">
+                <div class="title">关键词过滤</div>
+                <div class="circle" id="add_filter">
+                    <div class="circle-text">+</div>
+                </div>
+            </div>
+            <div id="filter_lines">
+                <div class="flexd">
+                    <input class="select-box" type="checkbox">
+                    <input type="text">
+                    <div class="circle delete-filter" style="background-color: red;">
+                        <div class="circle-text">×</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<script src="popup.js"></script>
 </html>

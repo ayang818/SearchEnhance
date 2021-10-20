@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     width: 600px;
     height: 450px;
 }
@@ -6,19 +6,53 @@
 .title {
     size: 2rem;
     font-weight: bolder;
-
 }
 
 .btn {
-    border-radius: 100px;
     border: 1px solid black;
-    height: 1rem;
-    width: 1rem;
+    border-radius: 100px;
+    padding: 1rem;
+    height: 10px;
+    width: auto;
+    margin: 0 10px 0 10px;
+}
+
+/* 圆形文字居中 */
+.circle {
+    width: 24px;
+    height: auto;
+    border-radius: 50%;
+    background-color: #1E90FF;
+    margin: 0 10px 0 10px;
+}
+.delete-filter {
+    
+}
+.circle-text {
+    width: 24px;
+    height: auto;
+    line-height: 24px;
+    text-align: center;
+    font-size: 56rpx;
+    color: #ffffff;
+    /* 禁用文字选中 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.select-box {
+    width: 22px!important;
+    height: 22px;
+    margin: 0 0 0 0;
 }
 
 .flexd {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
+    margin: 10px 0 10px 0;
 }
 
 .w200 {
