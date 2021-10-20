@@ -22,6 +22,6 @@
  },
  "manifest_version": 2,
  "name": "SearchEnhance",
- "permissions": ["webRequest","notifications", "cookies", "tabs", "http://*/*", "https://*/*","<all_urls>" ],
+ "permissions": ["webRequest", "webRequestBlocking","notifications", "cookies", "tabs", "*://www.baidu.com/s?*", "*://www.google.com/search?*"],
  "version": "1.1.0"
 }
