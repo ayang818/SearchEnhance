@@ -8,14 +8,6 @@
     font-weight: bolder;
 }
 
-.btn {
-    border: 1px solid black;
-    border-radius: 100px;
-    padding: 1rem;
-    height: 10px;
-    width: auto;
-    margin: 0 10px 0 10px;
-}
 
 /* 圆形文字居中 */
 .circle {
@@ -25,9 +17,11 @@
     background-color: #1E90FF;
     margin: 0 10px 0 10px;
 }
-.delete-filter {
-    
+
+.circle:hover {
+    opacity: 0.5;
 }
+
 .circle-text {
     width: 24px;
     height: auto;
@@ -40,6 +34,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.delete-filter {
+
 }
 
 .select-box {
