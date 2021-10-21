@@ -36,9 +36,13 @@
     user-select: none;
 }
 
-.delete-filter {
+/* .delete-filter {
 
 }
+
+.text-filter-input {
+
+} */
 
 .select-box {
     width: 22px!important;

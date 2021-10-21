@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="content.css">
     <title>Welcome to search enhance</title>
 </head>
-
+<script src="util.js"></script>
 <body>
     <b>SearchEnhance(搜索增强)</b>
     <p>让你可以更方便地使用你的搜索引擎</p>
@@ -27,7 +27,7 @@
             <div id="filter_lines">
                 <div class="flexd">
                     <input class="select-box" type="checkbox">
-                    <input type="text">
+                    <input onblur="input_on_blur(this.value)" type="text">
                     <div class="circle delete-filter" style="background-color: red;" id="00">
                         <div class="circle-text">×</div>
                     </div>

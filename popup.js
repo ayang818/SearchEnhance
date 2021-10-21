@@ -10,7 +10,7 @@ function add_append_event() {
         line.innerHTML = 
         `
             <input class="select-box" type="checkbox">
-            <input type="text">
+            <input onblur="input_on_blur()" type="text">
             <div class="circle delete-filter" style="background-color: red;" id="${i}">
                 <div class="circle-text">×</div>
             </div>
@@ -18,6 +18,7 @@ function add_append_event() {
         filter_lines.appendChild(line)
         // 每次append 都要为所有的 delete btn 绑定上删除事件
         add_delete_event_for_btn()
+        bind_loss_focus_event_to_text_filter_input()
     })
 }
 
