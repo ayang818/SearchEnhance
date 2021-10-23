@@ -27,11 +27,19 @@ function initGoogleFunc(ehcEvent) {
 function enhanceBaiduSearchFilter(key, val) {
     // TODO 获取当前 active mod 下的所有 active 的 filter
     if (key != "wd") return 
-    if (String(val).indexOf("-csdn") != -1) return "ignore"
-    let result = key + "=" + val + "%20-csdn" + "&"
-    return result
+    let result = key + "=" + val
+    filter_lines = JSON.parse(localStorage.getItem("filter_key"))
+    for (let i = 0; i < filter_lines.length; i++) {
+        let filter_line = filter_lines[i]
+        if (String(val).indexOf(String(filter_line.val)) != -1) continue
+        if (filter_line.active) {
+            result += ("%20-" + filter_line.val + "&")
+        }
+    }
+    return result ? result : ""
 }
 
+// TODO
 function enhanceGoogleSearchFilter(key, val) {
     if (key != "q") return
     if (String(val).indexOf("-csdn") != -1) return "ignore"
