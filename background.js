@@ -39,12 +39,12 @@ function enhanceGoogleSearchFilter(key, val) {
 function getSearchFilter(key, val) {
     let result = key + "=" + val
     filter_lines = JSON.parse(localStorage.getItem("filter_key"))
-    if (!filter_lines) return
+    if (!filter_lines) return result
     for (let i = 0; i < filter_lines.length; i++) {
         let filter_line = filter_lines[i]
         if (String(val).indexOf(String(filter_line.val)) != -1) continue
         if (filter_line.active) {
-            result += ("%20-" + filter_line.val + "&")
+            result += ("%20-" + filter_line.val)
         }
     }
     return result ? result : ""

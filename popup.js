@@ -87,7 +87,7 @@ function init_triggers() {
     // 每次append 都要为所有的 delete btn 绑定上删除事件
     common_add_element_event_trigger("delete-filter", callback_btn_remove_ele, false, 'click')
     // 为 input text 绑定 onblur 事件
-    common_add_element_event_trigger("filter-text-input", callback_input_on_blur, true, "onblur")
+    common_add_element_event_trigger("filter-text-input", callback_input_on_blur, true, "onchange")
     common_add_element_event_trigger("select-box", callback_checkbox_checked, false, "click")
 }
 
