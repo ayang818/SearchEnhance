@@ -1,8 +1,8 @@
 // Backgound.js 相当于是扩展的灵魂，可以理解为这里是最核心的部分。你应该在这里注册一系列监听函数，来对用户的操作做相应的处理。同时如果你要发请求到自己的服务器，这里也是合适的位置之一，因为在 content.js 里面的话，会有跨域的限制
 
 // https://www.baidu.com/s?ie=UTF-8&wd=js%20string%20contains
-const BAIDU = 1
-const GOOGLE = 2
+const BAIDU = "baidu-se"
+const GOOGLE = "google-se"
 const UNKNOWN = 0
 
 class EhcEvent {
@@ -22,7 +22,16 @@ function initGoogleFunc(ehcEvent) {
     ehcEvent.enhance_search_filter = enhanceGoogleSearchFilter
 }
 
-
+function isBlocked(id) {
+    let active_data = JSON.parse(localStorage.getItem("se_active_status"))
+    se_data = active_data[id]
+    if (se_data != null) {
+        // 如果选择了，就不阻塞
+        return !se_data["checked"]
+    }
+    console.error(`Fatal: checked your id name`)
+    return true
+}
 
 function enhanceBaiduSearchFilter(key, val) {
     // TODO 获取当前 active mod 下的所有 active 的 filter
@@ -38,7 +47,7 @@ function enhanceGoogleSearchFilter(key, val) {
 
 function getSearchFilter(key, val) {
     let result = key + "=" + val
-    filter_lines = JSON.parse(localStorage.getItem("filter_key"))
+    let filter_lines = JSON.parse(localStorage.getItem("filter_key"))
     if (!filter_lines) return result
     for (let i = 0; i < filter_lines.length; i++) {
         let filter_line = filter_lines[i]
@@ -60,11 +69,17 @@ chrome.webRequest.onBeforeRequest.addListener(
         if (!params || params.length <= 1) {
             return
         }
-        // 初始化事件组
+        // 如果在某个搜索引擎上可用，就初始化事件组
         if (params[0].indexOf("baidu") != -1) {
+            if (isBlocked(BAIDU)) {
+                return 
+            }
             // 根据域名判断在哪个搜索引擎
             initBaiduFunc(ehcEvent)
         } else if (params[0].indexOf("google") != -1) {
+            if (isBlocked(GOOGLE)) {
+                return
+            }
             initGoogleFunc(ehcEvent)
         }
         method_get_params = String(params[1]).split("&")

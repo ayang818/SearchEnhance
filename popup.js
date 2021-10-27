@@ -1,5 +1,6 @@
 // ================================ global variables
 const filter_key = "filter_key"
+const se_active_status_key = "se_active_status"
 filter_line_id_prefix = "filter_line_"
 id_start = 1
 // ================================ global variables
@@ -55,6 +56,7 @@ function get_id() {
 
 // =================================  event_controller; 
 // 初始化 filter_lines dom
+init_active_se()
 init_filter_lines()
 init_triggers()
 
@@ -74,6 +76,18 @@ function init_filter_lines() {
         append_filter_line_dom(null, ele['active'], ele['val'], get_id())
     }
     add_btn_append_filter_line_trigger()
+}
+
+function init_active_se() {
+    let active_data = get_se_active_status()
+    let dom_list = document.getElementsByClassName("active-se-checkbox")
+    for (let i = 0;i<dom_list.length;i++) {
+        let dom = dom_list[i]
+        let se_id = dom.parentElement.children[1].id
+        let real_checked_status = active_data[se_id]["checked"]
+        dom.checked = real_checked_status
+    }
+    common_add_element_event_trigger('active-se-checkbox', callback_active_search_engine, false, 'click')
 }
 
 
@@ -119,7 +133,7 @@ function append_filter_line_dom(event, checked, text, id) {
     line.className = "flexd"
     line.innerHTML =
         `
-        <input class="select-box" type="checkbox">
+        <input class="select-box base-select-box-style" type="checkbox">
         <input class="filter-text-input" type="text">
         <div class="circle delete-filter" style="background-color: red;">
             <div class="circle-text">×</div>
@@ -161,6 +175,14 @@ function callback_checkbox_checked(ele) {
             return
         }
         update_filter_line(val, checked, ele.parentElement.id)
+    }
+}
+
+function callback_active_search_engine(ele) {
+    return function () {
+        let se_id =  ele.parentElement.children[1].id
+        let checked = ele.checked
+        update_se_active_status(se_id, checked)
     }
 }
 // =================================  event_controller
@@ -225,3 +247,23 @@ function check_filter_line_exist(list, id) {
     return -1
 }
 // ================================  filter_line_manager
+
+
+// ================================  se_active_status_manager
+function update_se_active_status(se_id, checked_status) {
+    let active_status_data = localcache.get(se_active_status_key)
+    if (active_status_data == null) active_status_data = {"baidu-se": {"checked": true}, "google-se": {"checked": true}}
+    if (active_status_data[se_id] != null ) {
+        active_status_data[se_id]["checked"] = checked_status
+    }
+    localcache.set(se_active_status_key, active_status_data)
+}
+
+function get_se_active_status() {
+    let resp = localcache.get(se_active_status_key)
+    if (resp == null) {
+        resp = {"baidu-se": {"checked": true}, "google-se": {"checked": true}}
+    }
+    return resp
+}
+// ================================  se_active_status_manager
