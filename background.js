@@ -34,12 +34,10 @@ function isBlocked(id) {
 }
 
 function enhanceBaiduSearchFilter(key, val) {
-    // TODO 获取当前 active mod 下的所有 active 的 filter
     if (key != "wd") return 
     return getSearchFilter(key, val)
 }
 
-// TODO check it
 function enhanceGoogleSearchFilter(key, val) {
     if (key != "q") return
     return getSearchFilter(key, val)
@@ -92,9 +90,10 @@ chrome.webRequest.onBeforeRequest.addListener(
                 let val = pair.slice(underIdx + 1, pair.length)
                 let newKv = ehcEvent.enhance_search_filter(key, val)
                 if (newKv) {
-                    if (newKv == "ignore") return
-                    newPageUrl += newKv
-                    console.log(pair)
+                    newPageUrl += (newKv + "&")
+                } else {
+                    // 如果没有命中规则，原样拼回去
+                    newPageUrl += (pair + "&")
                 }
             }
         }

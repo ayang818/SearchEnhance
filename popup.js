@@ -59,6 +59,8 @@ function get_id() {
 init_active_se()
 init_filter_lines()
 init_triggers()
+// 初始化搜索引擎默认状态到 localStorage
+update_se_active_status(null, null)
 
 function init_filter_lines() {
     filter_lines = document.getElementById("filter_lines")
@@ -253,7 +255,7 @@ function check_filter_line_exist(list, id) {
 function update_se_active_status(se_id, checked_status) {
     let active_status_data = localcache.get(se_active_status_key)
     if (active_status_data == null) active_status_data = {"baidu-se": {"checked": true}, "google-se": {"checked": true}}
-    if (active_status_data[se_id] != null ) {
+    if (se_id != null && checked_status != null && active_status_data[se_id] != null) {
         active_status_data[se_id]["checked"] = checked_status
     }
     localcache.set(se_active_status_key, active_status_data)
