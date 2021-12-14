@@ -14,16 +14,19 @@ var ehcEvent = new EhcEvent()
 
 function initBaiduFunc(ehcEvent) {
     engine = BAIDU
+    // 返回一个 kw=123 形式的字符串
     ehcEvent.enhance_search_filter = enhanceBaiduSearchFilter
 }
 
 function initGoogleFunc(ehcEvent) {
     engine = GOOGLE
+    // 返回一个 kw=123 形式的字符串
     ehcEvent.enhance_search_filter = enhanceGoogleSearchFilter
 }
 
 function isBlocked(id) {
     let active_data = JSON.parse(localStorage.getItem("se_active_status"))
+    if (!active_data) return true
     se_data = active_data[id]
     if (se_data != null) {
         // 如果选择了，就不阻塞
@@ -74,30 +77,41 @@ chrome.webRequest.onBeforeRequest.addListener(
             }
             // 根据域名判断在哪个搜索引擎
             initBaiduFunc(ehcEvent)
+            console.log('init Baidu event list')
         } else if (params[0].indexOf("google") != -1) {
             if (isBlocked(GOOGLE)) {
                 return
             }
             initGoogleFunc(ehcEvent)
+            console.log('init Google event list')
         }
+        let shouldRedirect = true
         method_get_params = String(params[1]).split("&")
         for (let idx = 0; idx < method_get_params.length; idx += 1) {
             let pair = String(method_get_params[idx])
+            if (String(pair).trim() === '') continue
             let underIdx = String(pair).indexOf("=")
-            if (underIdx != -1) {
-                // 只取第一个 =
-                let key = pair.slice(0, underIdx)
-                let val = pair.slice(underIdx + 1, pair.length)
-                let newKv = ehcEvent.enhance_search_filter(key, val)
-                if (newKv) {
-                    newPageUrl += (newKv + "&")
-                } else {
-                    // 如果没有命中规则，原样拼回去
-                    newPageUrl += (pair + "&")
-                }
+            if (underIdx === -1) {
+                return
+            }
+            // 只取第一个 =
+            let key = pair.slice(0, underIdx)
+            let val = pair.slice(underIdx + 1, pair.length)
+            let newPair = ehcEvent.enhance_search_filter(key, val)
+            if (newPair) {
+                if (newPair === pair) shouldRedirect = false
+                newPageUrl += (newPair + "&")
+            } else {
+                // 如果没有命中规则或和之前一样，原样拼回去
+                newPageUrl += (pair + "&")
             }
         }
         console.log("new url=",newPageUrl)
+        if (!shouldRedirect) {
+            // 不进行无限重定向
+            console.log('reject infinite redirect')
+            return 
+        }
         // redirect 的时候又会来一次
         return {
             redirectUrl: newPageUrl
